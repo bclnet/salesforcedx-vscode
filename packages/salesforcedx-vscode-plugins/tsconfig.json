@@ -1,0 +1,19 @@
+{
+  "extends": "../../tsconfig.common.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "out",
+    "strict": false,
+    "noImplicitAny": false
+  },
+  "exclude": [
+    "node_modules",
+    ".vscode-test",
+    "out"
+  ],
+  "references": [
+    {
+      "path": "../salesforcedx-utils-vscode"
+    },
+  ]
+}
