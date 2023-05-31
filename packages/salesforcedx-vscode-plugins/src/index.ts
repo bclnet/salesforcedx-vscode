@@ -6,9 +6,9 @@
  */
 
 import * as vscode from 'vscode';
-import { telemetryService } from './telemetry';
-import Plugins from './plugins';
 import { EXTENSION_NAME } from './constants';
+import Plugins from './plugins';
+import { telemetryService } from './telemetry';
 
 export { channelService } from './channels';
 export { WorkspaceContext, workspaceContextUtils } from './context';

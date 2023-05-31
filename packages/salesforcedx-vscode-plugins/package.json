@@ -1,7 +1,7 @@
 {
   "name": "salesforce-vscode-plugins",
-  "displayName": "SF Plugins",
-  "description": "Provides vscode features for plugins",
+  "displayName": "Salesforce CLI Plugins",
+  "description": "Provides integration with the Salesforce CLI Plugins",
   "qna": "https://github.com/forcedotcom/salesforcedx-vscode/issues",
   "bugs": {
     "url": "https://github.com/forcedotcom/salesforcedx-vscode/issues"
