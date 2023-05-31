@@ -4,12 +4,13 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
+
 import * as vscode from 'vscode';
 import { Config, Interfaces } from '@oclif/core';
 import { ensureJsonMap } from '@salesforce/ts-types';
 import * as fs from 'fs';
 import * as path from 'path';
-// import { v4 as uuidv4 } from 'uuid';
+import { parse as uuidParse, stringify as uuidStringify } from 'uuid';
 import { ROOT_DIR } from '../constants';
 
 function Object_merge(target: object, source: any) {
@@ -28,12 +29,33 @@ function Object_merge(target: object, source: any) {
   }
 }
 
-function readFile(filePath: string): any { return require(filePath); }
-function readJsonFile(filePath: string): any { return JSON.parse(fs.readFileSync(filePath, 'utf8')); }
+function loadModule(filePath: string): any { return require(filePath); }
+function readJson(filePath: string): any { return JSON.parse(fs.readFileSync(filePath, 'utf8')); }
+
+class UuidDigest {
+  private readonly digest: Uint8Array;
+
+  constructor(private seed: number) {
+    this.digest = new Uint8Array(16);
+  }
+
+  public add(uuid: string): void {
+    const arr = uuidParse(uuid), s = this.seed, d = this.digest;
+    for (let i = 0; i < 16; ++i) d[i] = (s * arr[i] ^ d[i]) % 0x100;
+  }
+
+  public toString(): string {
+    const d = this.digest;
+    d[6] = Math.abs((d[6] - 0x10) % 0x50) + 0x10;
+    d[8] = Math.abs((d[8] - 0x80) % 0x50) + 0x80;
+    return uuidStringify(d);
+  }
+}
 
 interface Plugin {
   name: string;
   root: string;
+  verId: string;
   activate: Function;
   deactivate: Function;
 }
@@ -41,44 +63,47 @@ interface Plugin {
 export default class Plugins {
   private static packagePath = path.join(ROOT_DIR, '../package.json');
   private static instance: Plugins;
-  private readonly plugins: Plugin[];
   private readonly debug: any;
+  private readonly plugins: Plugin[];
 
   public static async getInstance() {
     if (!Plugins.instance) {
-      Plugins.ensurePackage(Plugins.packagePath);
+      const rootVerId = Plugins.ensurePackage(Plugins.packagePath);
       const config = await Config.load(module.filename || __dirname);
-      Plugins.instance = new Plugins(config);
+      Plugins.instance = new Plugins(config, rootVerId);
     }
     return Plugins.instance;
   }
 
-  constructor(config: Interfaces.Config) {
+  constructor(config: Interfaces.Config, rootVerId: string) {
+    this.debug = require('debug')('@oclif/plugins');
+    const digest = new UuidDigest(config.plugins.length);
     this.plugins = config.plugins.filter(s => s.name !== 'sfdx' && s.name !== 'sf').map(s => {
-      console.log(`Loading plugin: ${s.name}`);
+      this.debug(`Loading plugin: ${s.name}`);
       const plugin: Plugin = {
         name: s.name,
         root: s.root,
+        verId: undefined,
         activate: undefined,
         deactivate: undefined
       };
       try {
-        const code = readFile(s.root);
+        const verId = ensureJsonMap(readJson(path.join(s.root, 'package.json'))).verId as string;
+        if (verId) digest.add(verId);
+        const code = loadModule(s.root);
+        plugin.verId = verId;
         plugin.activate = code.activate;
         plugin.deactivate = code.deactivate;
       } catch (error: any) {
-        //console.log(error);
+        // console.log(error);
       }
       return plugin;
     });
-    console.log(this.plugins);
-    this.debug = require('debug')('@oclif/plugins');
-    const rootVerId = ensureJsonMap(readJsonFile(path.join(config.root, 'package.json'))).verId as string;
-    const thisVerId = this.getVerId();
-    if (rootVerId !== thisVerId) {
-      console.log('verId', rootVerId, thisVerId);
-      this.buildPackage(Plugins.packagePath);
+    const verId = digest.toString();
+    if (rootVerId !== verId) {
+      this.buildPackage(Plugins.packagePath, verId);
     }
+    // console.log(this.plugins);
   }
 
   public async activate(context: vscode.ExtensionContext) {
@@ -93,20 +118,20 @@ export default class Plugins {
     });
   }
 
-  private getVerId(): string {
-    return 'new';
-  }
-
-  private static ensurePackage(jsonPath: string): void {
-    if (fs.existsSync(jsonPath)) return;
+  private static ensurePackage(jsonPath: string): string {
+    if (fs.existsSync(jsonPath)) {
+      return ensureJsonMap(readJson(jsonPath)).verId as string
+    }
     const fse = require('fs-extra');
     fse.outputJSONSync(jsonPath, {
-      "name": "sfdx",
-      "contributes": {}
+      name: 'sfdx',
+      verId: '',
+      contributes: {}
     }, { spaces: 2 });
+    return '';
   }
 
-  private buildPackage(jsonPath: string): void {
+  private buildPackage(jsonPath: string, verId: string): void {
     const jsonRoot = jsonPath.substring(0, jsonPath.length - 6);
 
     // build files
@@ -114,13 +139,14 @@ export default class Plugins {
     let nlsJa = {};
     const contributes = {};
 
+    // scan plugins
     this.plugins.forEach(s => {
       const nlsPath = path.join(s.root, 'package.nls.json');
       const nlsJaPath = path.join(s.root, 'package.nls.ja.json');
       const packagePath = path.join(s.root, 'package.json');
-      if (fs.existsSync(nlsPath)) nls = { ...nls, ...ensureJsonMap(readFile(nlsPath)) };
-      if (fs.existsSync(nlsJaPath)) nlsJa = { ...nlsJa, ...ensureJsonMap(readFile(nlsJaPath)) };
-      const obj = readJsonFile(packagePath).contributes;
+      if (fs.existsSync(nlsPath)) nls = { ...nls, ...ensureJsonMap(readJson(nlsPath)) };
+      if (fs.existsSync(nlsJaPath)) nlsJa = { ...nlsJa, ...ensureJsonMap(readJson(nlsJaPath)) };
+      const obj = readJson(packagePath).contributes;
       Object_merge(contributes, obj);
     });
 
@@ -129,8 +155,9 @@ export default class Plugins {
     fse.outputJSONSync(jsonRoot + '.nls.json', nls, { spaces: 2 });
     fse.outputJSONSync(jsonRoot + '.nls.ja.json', nlsJa, { spaces: 2 });
     fse.outputJSONSync(jsonPath, {
-      "name": "sfdx",
-      "contributes": contributes
+      name: 'sfdx',
+      verId: verId,
+      contributes: contributes
     }, { spaces: 2 });
   }
 }

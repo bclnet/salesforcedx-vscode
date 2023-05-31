@@ -4,15 +4,18 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
+
 import * as vscode from 'vscode';
-import { channelService } from './channels';
-import { WorkspaceContext, workspaceContextUtils } from './context';
-import { decorators, disposeTraceFlagExpiration, showDemoMode } from './decorators';
-import { notificationService, ProgressNotification } from './notifications';
-import Plugins from './plugins';
-import { sfdxCoreSettings } from './settings';
 import { telemetryService } from './telemetry';
-import {
+import Plugins from './plugins';
+import { EXTENSION_NAME } from './constants';
+
+export { channelService } from './channels';
+export { WorkspaceContext, workspaceContextUtils } from './context';
+export { decorators, disposeTraceFlagExpiration, showDemoMode } from './decorators';
+export { notificationService, ProgressNotification } from './notifications';
+export { sfdxCoreSettings } from './settings';
+export {
     OrgAuthInfo,
     disableCLITelemetry,
     isCLIInstalled,
@@ -23,23 +26,6 @@ import {
     getAuthFieldsFor,
     getDefaultDevHubUsernameOrAlias
 } from './util';
-import { EXTENSION_NAME } from './constants';
-export {
-    channelService,
-    WorkspaceContext, workspaceContextUtils,
-    decorators, disposeTraceFlagExpiration, showDemoMode,
-    notificationService, ProgressNotification,
-    sfdxCoreSettings,
-    OrgAuthInfo,
-    disableCLITelemetry,
-    isCLIInstalled,
-    isCLITelemetryAllowed,
-    isSFDXContainerMode,
-    showCLINotInstalledMessage,
-    workspaceUtils,
-    getAuthFieldsFor,
-    getDefaultDevHubUsernameOrAlias
-}
 
 let plugins: Plugins;
 
