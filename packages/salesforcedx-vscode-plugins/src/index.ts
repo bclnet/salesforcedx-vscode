@@ -27,6 +27,10 @@ export {
     getDefaultDevHubUsernameOrAlias
 } from './util';
 
+function flowTest(this: unknown) {
+    console.log('FLOWTEST');
+}
+
 let plugins: Plugins;
 
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
@@ -43,14 +47,21 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 
     // Plugins
     plugins = await Plugins.getInstance();
-    await plugins.activate(context);
+    // await plugins.activate(context, __dirname);
 
-    // send activationEvent
+    vscode.commands.registerCommand('sfdx.test', flowTest);
+
+    // Send activationEvent
     telemetryService.sendExtensionActivationEvent(extensionHRStart);
+    console.log('SFDX CLI Plugins Extension Activated');
 }
 
 export function deactivate(): Thenable<void> | undefined {
-    plugins.deactivate();
+    // plugins.deactivate();
+    console.log('SFDX CLI Plugins Extension Deactivated');
+
+    // Send metric data.
     telemetryService.sendExtensionDeactivationEvent();
+    telemetryService.dispose();
     return;
 }
