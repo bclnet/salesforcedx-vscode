@@ -47,6 +47,7 @@ export const ENABLE_SOBJECT_REFRESH_ON_STARTUP =
   'enable-sobject-refresh-on-startup';
 export const ENABLE_DEPLOY_AND_RETRIEVE_FOR_SOURCE_TRACKED_ORGS =
   'enableDeployAndRetrieveForSourceTrackedOrgs.enabled';
+export const ENABLE_SOURCE_TRACKING_FOR_DEPLOY_RETRIEVE = 'experimental.enableSourceTrackingForDeployAndRetrieve';
 export const CLI = {
   AUTH_DEVICE_LOGIN: 'force:auth:device:login',
   AUTH_WEB_LOGIN: 'force:auth:web:login'
@@ -60,3 +61,7 @@ export const FUNCTIONS_PATH = '/functions/';
 
 // Commands
 export const ORG_OPEN_COMMAND = 'sfdx.force.org.open';
+export const FORCE_SOURCE_PULL_LOG_NAME =
+  'force_source_pull_default_scratch_org';
+export const FORCE_SOURCE_PUSH_LOG_NAME =
+  'force_source_push_default_scratch_org';

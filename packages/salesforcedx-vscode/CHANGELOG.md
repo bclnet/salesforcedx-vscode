@@ -1,14 +1,114 @@
+# 58.3.1 - June 21, 2023
+
+## Added
+
+#### salesforcedx-vscode-core
+
+- Backed out a change from the v58.3.0 release to fix https://github.com/forcedotcom/salesforcedx-vscode/issues/4938.
+
+# 58.3.0 - June 21, 2023
+
+## Added
+
+#### salesforcedx-vscode-core
+
+- We updated telemetry data to include Org Id. ([PR #4917](https://github.com/forcedotcom/salesforcedx-vscode/pull/4917))
+
+# 58.2.0 - June 13, 2023
+
+## Added
+
+#### salesforcedx-vscode-core
+
+- Deploy and retrieve commands now use the correct source API version. ([PR #4891](https://github.com/forcedotcom/salesforcedx-vscode/pull/4891))
+
+- We made some changes under the hood. ([PR #4913](https://github.com/forcedotcom/salesforcedx-vscode/pull/4913))
+
+# 58.1.1 - June 7, 2023
+
+## Added
+
+#### salesforcedx-vscode-apex
+
+- We updated the Apex Language Server to include new and modified class. This update also fixed an issue with autocompletion not working for Slack classes. ([PR #4907](https://github.com/forcedotcom/salesforcedx-vscode/pull/4907))
+
+## Fixed
+
+#### salesforcedx-sobjects-faux-generator
+
+- SObject refresh now uses the correct API version. ([PR #4883](https://github.com/forcedotcom/salesforcedx-vscode/pull/4883))
+
+#### salesforcedx-vscode-apex
+
+- We made some changes under the hood. ([PR #4906](https://github.com/forcedotcom/salesforcedx-vscode/pull/4906))
+
+#### salesforcedx-vscode-apex-replay-debugger
+
+- We made some changes under the hood. ([PR #4906](https://github.com/forcedotcom/salesforcedx-vscode/pull/4906))
+
+# 58.0.1 - June 2, 2023
+
+## Added
+
+#### salesforcedx-vscode-core
+
+- We added a setting that enables or disables source tracking for deploy and retrieve operations. ([PR #4885](https://github.com/forcedotcom/salesforcedx-vscode/pull/4885))
+
+- We exposed the `TelemetryService` class in the core extension API ([PR #4879](https://github.com/forcedotcom/salesforcedx-vscode/pull/4879))
+
+#### salesforcedx-vscode-lwc
+
+- We now support custom property editors in `.js-meta.xml` validation. With this update you can now get syntax insights when configuring a component for custom property editing. ([PR #4874](https://github.com/forcedotcom/salesforcedx-vscode/pull/4874))
+
+## Fixed
+
+#### salesforcedx-vscode-core
+
+- We fixed an issue where local changes were being detected as conflicts in conjunction with the "Detect Conflicts At Sync" setting. ([PR #4853](https://github.com/forcedotcom/salesforcedx-vscode/pull/4853))
+
+#### salesforcedx-vscode-soql
+
+- We updated the copyright template so that it shows the current year ([PR #4850](https://github.com/forcedotcom/salesforcedx-vscode/pull/4850))
+
+# 57.15.0 - May 24, 2023
+
+## Added
+
+#### salesforcedx-vscode-core
+
+- We enabled our Org Browser functionality when users are working with Scratch Orgs. ([PR #4810](https://github.com/forcedotcom/salesforcedx-vscode/pull/4810))
+
+- We added a setting "Prefer deploy on save" that will run a deploy instead of a push when "Push or deploy on save" is enabled. ([PR #4820](https://github.com/forcedotcom/salesforcedx-vscode/pull/4820))
+
+- We published our extensions to Open VSX for the first time, and automated the process to publish there going forward. ([PR #4855](https://github.com/forcedotcom/salesforcedx-vscode/pull/4855))
+
+## Fixed
+
+#### salesforcedx-vscode-apex
+
+- We updated the Apex language server so that the syntax for Database class methods like _insert_ and _delete_ include _accessLevel_ parameters. ([PR #4866](https://github.com/forcedotcom/salesforcedx-vscode/pull/4866))
+
+#### salesforcedx-vscode-core
+
+- We fixed an issue where a MetadataApiRetrieveError was displayed when attempting to deploy an empty project ([PR #4845](https://github.com/forcedotcom/salesforcedx-vscode/pull/4845))
+
+- We made some changes under the hood. ([PR #4793](https://github.com/forcedotcom/salesforcedx-vscode/pull/4793))
+
+#### salesforcedx-vscode-lightning, salesforcedx-vscode-lwc
+
+- We've made an update to the lightning language server version that may help the server load faster for users with large projects. Thank you [mwaddoupffdc](https://github.com/mwaddoupffdc) for contributing this improvement! ([PR #4872](https://github.com/forcedotcom/salesforcedx-vscode/pull/4872))
+
 # 57.14.1 - May 17, 2023
 
 ## Fixed
 
 #### salesforcedx-vscode-core
 
-- Update @salesforce/templates version so that the latest API version 57.0 is used for `assetVersion` when creating a sample analytics app template. ([PR #4851](https://github.com/forcedotcom/salesforcedx-vscode/pull/4851))
+- We updated @salesforce/templates version so that the latest API version 57.0 is used for `assetVersion` when creating a sample analytics app template. ([PR #4851](https://github.com/forcedotcom/salesforcedx-vscode/pull/4851))
 
 #### salesforcedx-vscode-soql
 
-- Updated SOQL Builder so that it does not show an error when there is no default org set and a SOQL file is not currently open. ([PR #4847](https://github.com/forcedotcom/salesforcedx-vscode/pull/4847))
+- We updated SOQL Builder so that it does not show an error when there is no default org set and a SOQL file is not currently open. ([PR #4847](https://github.com/forcedotcom/salesforcedx-vscode/pull/4847))
 
 # 57.13.1 - May 10, 2023
 
