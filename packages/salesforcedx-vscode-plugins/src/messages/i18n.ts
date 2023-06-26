@@ -17,6 +17,12 @@
  */
 export const messages = {
   channel_name: 'Salesforce CLI',
+  channel_starting_message: 'Starting ',
+  channel_end_with_exit_code: 'ended with exit code %s',
+  channel_end_with_sfdx_not_found:
+    'Salesforce CLI is not installed. Install it from https://developer.salesforce.com/tools/sfdxcli',
+  channel_end_with_error: 'ended with error %s',
+  channel_end: 'ended',
 
   progress_notification_text: 'Running %s',
 
@@ -27,7 +33,12 @@ export const messages = {
   notification_show_in_status_bar_button_text: 'Show Only in Status Bar',
   notification_make_default_dev: 'Authorize a Dev Hub',
 
+  task_view_running_message: '[Running] %s',
+
+  status_bar_text: `$(x) %s`,
+  status_bar_tooltip: 'Click to cancel the command',
   status_bar_open_org_tooltip: 'Open Org',
+  status_bar_org_picker_tooltip: 'Change Default Org',
 
   demo_mode_status_text: `$(gist-secret) SFDX DEMO`,
   demo_mode_status_tooltip: 'You are running Salesforce Extensions for VS Code in demo mode. You will be prompted for confirmation when connecting to production orgs.',

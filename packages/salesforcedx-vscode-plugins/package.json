@@ -15,7 +15,7 @@
     "theme": "light"
   },
   "aiKey": "a87e9a32-9687-4ac1-a889-799351ba923c",
-  "version": "57.14.1-beta.1",
+  "version": "58.4.0-beta.1",
   "publisher": "salesforce",
   "license": "BSD-3-Clause",
   "engines": {
@@ -27,11 +27,12 @@
   "dependencies": {
     "@oclif/core": "^2.8.5",
     "@salesforce/core": "^3.34.8",
-    "@salesforce/salesforcedx-utils-vscode": "57.15.0",
+    "@salesforce/salesforcedx-utils-vscode": "58.4.0",
     "@salesforce/schemas": "^1",
+    "@salesforce/source-deploy-retrieve": "^8.0.1",
     "@salesforce/ts-types": "1.5.21",
     "applicationinsights": "1.0.7",
-    "jsforce": "2.0.0-beta.23",
+    "jsforce": "2.0.0-beta.20",
     "rxjs": "^5.4.1",
     "shelljs": "0.8.5",
     "uuid": "9.0.0"
@@ -67,8 +68,9 @@
     "packageUpdates": {
       "main": "dist/index.js",
       "dependencies": {
-        "applicationinsights": "1.0.7",
         "@oclif/core": "^2.8.5",
+        "applicationinsights": "1.0.7",
+        "@heroku/functions-core": "0.7.0",
         "@salesforce/core": "^3.34.8",
         "@salesforce/source-tracking": "3.1.1",
         "@salesforce/source-deploy-retrieve": "^8.0.1",
@@ -78,13 +80,12 @@
     }
   },
   "scripts": {
-    "bundle:extension": "esbuild ./src/index.ts --bundle --outfile=dist/index.js --format=cjs --platform=node --external:vscode --external:@oclif/core --external:@salesforce/core --external:@salesforce/source-deploy-retrieve --external:applicationinsights --external:shelljs --minify",
+    "bundle:extension": "esbuild ./src/index.ts --bundle --outfile=dist/index.js --format=cjs --platform=node --external:vscode --external:@oclif/core --external:@salesforce/core --external:applicationinsights --external:shelljs --external:@salesforce/source-deploy-retrieve --external:@heroku/functions-core --minify",
     "vscode:prepublish": "npm prune --production",
     "vscode:package": "ts-node -P ./tsconfig.json ../../scripts/vsce-bundled-extension.ts",
     "vscode:sha256": "node ../../scripts/generate-sha256.js >> ../../SHA256",
     "vscode:publish": "node ../../scripts/publish-vsix.js",
     "compile": "tsc -p ./",
-    "compile:utils": "cd ../salesforcedx-utils-vscode && npm run compile",
     "lint": "tslint --project .",
     "lint:fix": "npm run lint -- --fix",
     "watch": "tsc -watch -p .",

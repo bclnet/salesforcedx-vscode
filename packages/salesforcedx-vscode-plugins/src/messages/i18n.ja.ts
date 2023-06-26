@@ -17,6 +17,12 @@
  */
 export const messages = {
   channel_name: 'Salesforce CLI',
+  channel_starting_message: '開始しています: ',
+  channel_end_with_exit_code: 'が終了コード %s で終了しました。',
+  channel_end_with_sfdx_not_found:
+    'Salesforce CLI がインストールされていません。https://developer.salesforce.com/tools/sfdxcli からインストールしてください。',
+  channel_end_with_error: 'がエラーで終了しました。%s',
+  channel_end: 'が終了しました。',
 
   progress_notification_text: '%s を実行しています。',
 
@@ -27,7 +33,10 @@ export const messages = {
   notification_show_in_status_bar_button_text: 'ステータスバーだけに表示',
   notification_make_default_dev: 'Dev Hub 組織を認証',
 
-  status_bar_open_org_tooltip: 'Open Org',
+  task_view_running_message: '[実行しています] %s',
+
+  status_bar_text: `$(x) %s`,
+  status_bar_tooltip: 'クリックしてコマンドをキャンセル',
 
   demo_mode_status_text: `$(gist-secret) SFDX DEMO`,
   demo_mode_status_tooltip: 'VS Code のSalesforce 拡張機能をデモモードで実行しています。本番環境に接続するときに確認を求められます。',
